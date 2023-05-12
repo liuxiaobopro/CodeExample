@@ -1,0 +1,68 @@
+version: "3.9"
+name: liuxiaobo-dc
+services:
+  portainer:
+    image: 6053537/portainer-ce
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  mysql8:
+    image: mysql:8
+    container_name: mysql8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 111111
+    volumes:
+      - mysql8_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  nacos:
+    image: nacos/nacos-server:2.0.2
+    container_name: nacos
+    restart: always
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+      - JVM_XMS=512m
+      - JVM_XMX=512m
+      - JVM_XMN=256m
+      - JVM_MS=128m
+      - JVM_MMS=320m
+    ports:
+      - "8848:8848"
+
+  consul:
+    image: consul:latest
+    container_name: consul
+    restart: always
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+  
+  elasticsearch:
+    image: elasticsearch:7.17.10
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms84m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+volumes:
+  mysql8_data: {}
+  redis_data: {}
