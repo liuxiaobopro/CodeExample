@@ -52,7 +52,7 @@ services:
     ports:
       - "8500:8500"
       - "8600:8600/udp"
-  
+
   elasticsearch:
     image: elasticsearch:7.17.10
     container_name: elasticsearch
@@ -62,6 +62,37 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+
+  yapi:
+    image: mrjin/yapi:latest
+    # build: ./
+    container_name: yapi
+    environment:
+      - VERSION=1.10.2
+      - LOG_PATH=/tmp/yapi.log
+      - HOME=/home
+      - PORT=3000
+      - ADMIN_EMAIL=test@test.com
+      - DB_SERVER=mongo
+      - DB_NAME=yapi
+      - DB_PORT=27017
+    # restart: always
+    ports:
+      - 127.0.0.1:3000:3000
+    # volumes:
+    #   - ~/data/yapi/log/yapi.log:/home/vendors/log # log dir
+    depends_on:
+      - mongo
+    entrypoint: "bash /wait-for-it.sh mongo:27017 -- entrypoint.sh"
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    # restart: always
+    ports:
+      - 127.0.0.1:27017:27017
+    # volumes:
+    #   - ~/data/yapi/mongodb:/data/db #db dir
 
 volumes:
   mysql8_data: {}
