@@ -94,6 +94,16 @@ services:
     # volumes:
     #   - ~/data/yapi/mongodb:/data/db #db dir
 
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
 volumes:
   mysql8_data: {}
   redis_data: {}
