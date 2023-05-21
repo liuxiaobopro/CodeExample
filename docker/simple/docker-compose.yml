@@ -1,14 +1,6 @@
 version: "3.9"
 name: liuxiaobo-dc
 services:
-  portainer:
-    image: 6053537/portainer-ce
-    container_name: portainer
-    restart: always
-    ports:
-      - "9000:9000"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
   mysql8:
     image: mysql:8
